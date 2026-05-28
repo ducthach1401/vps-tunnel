@@ -1,4 +1,4 @@
-server_url: __HEADSCALE_URL__
+server_url: https://headscale.example.com
 listen_addr: 0.0.0.0:8080
 metrics_listen_addr: 0.0.0.0:9090
 
@@ -6,7 +6,7 @@ noise:
   private_key_path: /var/lib/headscale/noise_private.key
 
 prefixes:
-  v4: __HEADSCALE_PREFIX_V4__
+  v4: 10.10.0.0/16
   v6: fd7a:115c:a1e0::/48
 
 derp:
@@ -28,4 +28,5 @@ log:
 
 dns:
   magic_dns: false
+  override_local_dns: false
   base_domain: headscale.local

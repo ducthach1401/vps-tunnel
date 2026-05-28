@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage:
-#   sudo ./connect-tailscale.sh <HEADSCALE_URL> <AUTH_KEY> [HOSTNAME]
+#   sudo ./connect-tailscale.sh [HEADSCALE_URL] [AUTH_KEY] [HOSTNAME]
 # Example:
 #   sudo ./connect-tailscale.sh https://headscale.example.com tskey-client-xxxxx my-laptop
 
@@ -19,12 +19,12 @@ if [[ ${EUID} -ne 0 ]]; then
 fi
 
 HEADSCALE_URL="${1:-${HEADSCALE_URL:-}}"
-AUTH_KEY="${2:-}"
-CUSTOM_HOSTNAME="${3:-}"
+AUTH_KEY="${2:-${TAILSCALE_AUTH_KEY:-}}"
+CUSTOM_HOSTNAME="${3:-${TAILSCALE_HOSTNAME:-}}"
 
 if [[ -z "$HEADSCALE_URL" || -z "$AUTH_KEY" ]]; then
-  echo "Usage: sudo $0 [HEADSCALE_URL] <AUTH_KEY> [HOSTNAME]"
-  echo "Or set HEADSCALE_URL in .env"
+  echo "Usage: sudo $0 [HEADSCALE_URL] [AUTH_KEY] [HOSTNAME]"
+  echo "Or set HEADSCALE_URL and TAILSCALE_AUTH_KEY in .env"
   exit 1
 fi
 

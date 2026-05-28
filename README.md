@@ -115,6 +115,18 @@ Trên máy client Linux:
 sudo ./connect-tailscale.sh https://headscale.example.com tskey-client-xxxxx my-laptop
 ```
 
+Hoac set trong `.env` roi chay gon:
+
+```env
+HEADSCALE_URL=https://headscale.example.com
+TAILSCALE_AUTH_KEY=hskey-auth-xxxxx
+TAILSCALE_HOSTNAME=my-laptop
+```
+
+```bash
+sudo ./connect-tailscale.sh
+```
+
 Script sẽ:
 
 - tự cài `tailscale` nếu chưa có
@@ -136,6 +148,8 @@ File `.env.example` hiện có:
 ```env
 HEADSCALE_URL=https://headscale.example.com
 HEADSCALE_PREFIX_V4=10.10.0.0/16
+TAILSCALE_AUTH_KEY=
+TAILSCALE_HOSTNAME=
 HEADSCALE_USER=main
 HEADSCALE_KEY_EXPIRATION=24h
 ```

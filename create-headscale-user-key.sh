@@ -48,7 +48,7 @@ ensure_headscale_running() {
 }
 
 ensure_user_exists() {
-  if compose_headscale users list -o json 2>/dev/null | grep -q "\"name\":\"$USERNAME\""; then
+  if compose_headscale users list -o json 2>/dev/null | tr -d '[:space:]' | grep -q "\"name\":\"$USERNAME\""; then
     return
   fi
 
@@ -56,11 +56,28 @@ ensure_user_exists() {
   compose_headscale users create "$USERNAME" >/dev/null
 }
 
+get_user_id() {
+  local users_json
+  local compact_json
+  local id
+
+  users_json="$(compose_headscale users list -o json)"
+  compact_json="$(printf '%s' "$users_json" | tr -d '[:space:]')"
+  id="$(printf '%s' "$compact_json" | sed -n "s/.*{\"id\":\([0-9][0-9]*\),\"name\":\"$USERNAME\".*/\1/p")"
+
+  if [[ -z "$id" ]]; then
+    echo "Failed to resolve user id for '$USERNAME'" >&2
+    exit 1
+  fi
+
+  USER_ID="$id"
+}
+
 create_auth_key() {
   local json_output
   local key
 
-  json_output="$(compose_headscale preauthkeys create -u "$USERNAME" --reusable --expiration "$EXPIRATION" -o json)"
+  json_output="$(compose_headscale preauthkeys create --user "$USER_ID" --reusable --expiration "$EXPIRATION" -o json)"
 
   key="$(printf '%s' "$json_output" | tr -d '\n' | sed -n 's/.*"key"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')"
 
@@ -97,6 +114,7 @@ main() {
   detect_compose
   ensure_headscale_running
   ensure_user_exists
+  get_user_id
   create_auth_key
   save_auth_key
 

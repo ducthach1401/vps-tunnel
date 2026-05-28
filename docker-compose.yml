@@ -3,18 +3,9 @@ services:
     image: headscale/headscale:latest
     container_name: headscale
     restart: unless-stopped
-    environment:
-      HEADSCALE_URL: ${HEADSCALE_URL?HEADSCALE_URL is required}
-      HEADSCALE_PREFIX_V4: ${HEADSCALE_PREFIX_V4?HEADSCALE_PREFIX_V4 is required}
-    command:
-      - /bin/sh
-      - -ec
-      - |
-        : "$${HEADSCALE_URL:?HEADSCALE_URL is required}"
-        sed -e "s|__HEADSCALE_URL__|$${HEADSCALE_URL}|g" -e "s|__HEADSCALE_PREFIX_V4__|$${HEADSCALE_PREFIX_V4}|g" /etc/headscale/config.template.yaml > /tmp/config.yaml
-        exec headscale serve --config /tmp/config.yaml
+    command: serve
     volumes:
-      - ./headscale/config.yaml:/etc/headscale/config.template.yaml:ro
+      - ./headscale/config.yaml:/etc/headscale/config.yaml:ro
       - ./headscale/data:/var/lib/headscale
     expose:
       - "8080"
