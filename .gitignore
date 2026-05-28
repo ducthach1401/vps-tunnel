@@ -1,0 +1,21 @@
+# Local environment
+.env
+.env.local
+
+# Local secrets
+.secrets/
+key.txt
+
+# Headscale runtime data
+headscale/data/
+
+# Nginx Proxy Manager runtime data and certificates
+npm/data/
+npm/letsencrypt/
+
+# Logs
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
