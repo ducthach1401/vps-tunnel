@@ -80,12 +80,14 @@ docker-compose exec headscale headscale apikeys create
 Neu ban dung Nginx thuong thay vi NPM, da co mau cau hinh SSL reverse proxy tai:
 
 - `nginx/headscale-ssl.conf.example`
+- `nginx/npm-admin-ssl.conf.example`
 
 Mau nay da gom:
 
 - Redirect HTTP -> HTTPS
 - Forward `/` ve Headscale
 - Forward `/web` ve Headscale UI tren cung domain
+- Forward NPM Admin UI qua domain rieng (proxy vao port 81)
 
 ## 4) Tạo user + auth key tự động
 
