@@ -18,6 +18,7 @@ services:
       - "80:80"
       - "81:81"
       - "443:443"
+      - "2222-2230:2222-2230"
     environment:
       DISABLE_IPV6: "true"
     volumes:
